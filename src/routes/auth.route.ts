@@ -9,12 +9,14 @@
  */
 
 import logger from '@/config/logger'
-import { Store } from '@/models/store.model'
+import { Room } from '@/models/room.model'
 import { User } from '@/models/user.model'
 import ApiError from '@/utils/ApiError'
 import express from 'express'
 import httpStatus from 'http-status'
 import passport from 'passport'
+import * as generator from 'generate-password'
+import MailService from '@/utils/MailSender'
 
 const router = express.Router()
 
@@ -32,13 +34,39 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/register', async (req, res, next) => {
   try {
-    const { first_name, last_name, email, password } = req.body
+    const {
+      first_name,
+      last_name,
+      email,
+      phone,
+      birthday,
+      gender,
+      address
+    } = req.body
+    const password = generator.generate({
+      length: 10,
+      numbers: true
+    });
     const user = new User()
     user.first_name = first_name
     user.last_name = last_name
     user.email = email
+    user.phone = phone
+    user.birthday = birthday
+    user.gender = gender
+    user.address = address
     user.setPassword(password)
     await user.save()
+    MailService.sendMail({
+      from: '"Shrikant" <shrikant.patwari@sadhanaitsolutions.com>', // sender address
+      to: user.email, // list of receivers
+      subject: 'Welcome!',
+      template: 'welcome', // the name of the template file i.e email.handlebars
+      context:{
+          name: user.name,
+          password: password
+      }
+    })
     res.json(user.toAuthJSON())
   } catch (e) {
     if (e.name === 'MongoError') return res.status(httpStatus.BAD_REQUEST).send(e)

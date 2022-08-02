@@ -6,8 +6,11 @@ export interface IBooking {
   bookingDate: Date
   checkIn: Date
   checkOut: Date
-  noOfBookedRoom: Number
+  noOfBookedRoom: number
   specialRequest: string
+  totalBillAmmount: number
+  ammountPaid: number
+  balanceRemaining: number
 }
 
 export default interface IBookingModel extends Document, IBooking {}
@@ -41,7 +44,19 @@ const schema = new Schema(
     specialRequest: {
         type: String,
         required: false
-    }
+    },
+    totalBillAmmount: {
+        type: Number,
+        required: true
+    },
+    ammountPaid: {
+        type: Number,
+        required: true
+    },
+    balanceRemaining: {
+        type: Number,
+        required: true
+    },
   },
   {
     timestamps: true,

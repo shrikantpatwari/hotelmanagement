@@ -13,3 +13,7 @@ export const DB = {
   PORT: Number(process.env.DB_PORT) || 27017,
 }
 export const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/Mocks'
+export const EMAIL_SERVICE_PROVIDER = process.env.EMAIL_SERVICE_PROVIDER || 'yandex'
+export const EMAIL_SERVICE_HOST = process.env.EMAIL_SERVICE_HOST || 'smtp.yandex.ru'
+export const EMAIL_SERVICE_AUTH_USER = process.env.EMAIL_SERVICE_AUTH_USER || ''
+export const EMAIL_SERVICE_AUTH_PASSWORD = process.env.EMAIL_SERVICE_AUTH_PASSWORD || ''

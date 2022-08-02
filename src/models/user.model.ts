@@ -9,6 +9,7 @@ export interface IUser {
   first_name: string
   last_name: string
   email: string
+  phone: string
   birthday: Date
   gender: string
   address: string
@@ -49,6 +50,10 @@ const schema = new Schema<IUserModel>(
       required: true,
       unique: true,
     },
+    phone: {
+      type: String,
+      required: false
+    },
     birthday: {
       type: Date,
       required: false
@@ -63,14 +68,6 @@ const schema = new Schema<IUserModel>(
     },
     status: {
       type: String,
-      required: false
-    },
-    createdAt: {
-      type: Date,
-      required: false
-    },
-    updatedAt: {
-      type: Date,
       required: false
     },
     hash_password: {
@@ -88,7 +85,7 @@ const schema = new Schema<IUserModel>(
 )
 
 // Plugins
-schema.plugin(uniqueValidator)
+// schema.plugin(uniqueValidator)
 schema.plugin(privateValidator)
 
 schema.virtual('name').get(function (this: IUserModel) {
@@ -120,8 +117,9 @@ schema.methods.generateJWT = function (): string {
 }
 
 schema.methods.toAuthJSON = function () {
-  const { first_name, last_name, name, email } = this
+  const { first_name, last_name, name, email, _id } = this
   return {
+    id: _id,
     name,
     first_name,
     last_name,

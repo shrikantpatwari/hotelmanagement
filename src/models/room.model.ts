@@ -8,12 +8,12 @@ export interface IRoom {
   bathroomAccessories: string[]
   entertainment: string[]
   comforts: string[]
-  capacityAdult: Number
-  capacityChild: Number
-  noOfRooms: Number
-  pricePerNight: Number
-  discountPercentge: Number
-  customerRating: Number
+  capacityAdult: number
+  capacityChild: number
+  noOfRooms: number
+  pricePerNight: number
+  discountPercentge: number
+  customerRating: number
 }
 
 export default interface IRoomModel extends Document, IRoom {}
@@ -31,23 +31,23 @@ const schema = new Schema(
       maxlength: 500,
     },
     images: {
-      type: Array<String>,
+      type: Array<string>,
       required: true,
     },
     features: {
-      type: Array<String>,
+      type: Array<string>,
       required: false
     },
     bathroomAccessories: {
-      type: Array<String>,
+      type: Array<string>,
       required: false
     },
     entertainment: {
-      type: Array<String>,
+      type: Array<string>,
       required: false
     },
     comforts: {
-      type: Array<String>,
+      type: Array<string>,
       required: false
     },
     capacityAdult: {
