@@ -2,7 +2,7 @@ import { Schema, Document, model } from 'mongoose'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { JWT_EXPIRE, JWT_SECRET } from '@/config/config'
-import uniqueValidator from 'mongoose-unique-validator'
+// import uniqueValidator from 'mongoose-unique-validator'
 import privateValidator from 'mongoose-private'
 
 export interface IUser {

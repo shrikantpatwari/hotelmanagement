@@ -12,7 +12,7 @@ import ApiError from './utils/ApiError'
 import { errorConverter, errorHandler } from './middlewares/error'
 import passport from 'passport'
 import { anonymousStrategy, jwtStrategy } from '@/config/passport'
-import swaggerUi from 'swagger-ui-express'
+// import swaggerUi from 'swagger-ui-express'
 
 const app = express()
 
