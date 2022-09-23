@@ -20,10 +20,10 @@ class MailSender {
         // point to the template folder
         const handlebarOptions = {
             viewEngine: {
-                partialsDir: path.resolve('./views/'),
+                partialsDir: path.resolve('./src/views/'),
                 defaultLayout: false,
             },
-            viewPath: path.resolve('./views/'),
+            viewPath: path.resolve('./src/views/'),
         };
 
         // use a template file with nodemailer
