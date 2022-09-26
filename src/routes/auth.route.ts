@@ -58,7 +58,7 @@ router.post('/register', async (req, res, next) => {
     user.setPassword(password)
     await user.save()
     MailService.sendMail({
-      from: 'gitanjali.giribuwa@gmail.com', // sender address
+      from: EMAIL_SERVICE_AUTH_USER, // sender address
       to: user.email, // list of receivers
       subject: 'Welcome!',
       template: 'welcome', // the name of the template file i.e email.handlebars

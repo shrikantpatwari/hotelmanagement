@@ -5,7 +5,7 @@ import { EMAIL_SERVICE_PROVIDER, EMAIL_SERVICE_HOST, EMAIL_SERVICE_AUTH_USER, EM
 const hbs = require('nodemailer-express-handlebars')
 
 class MailSender {
-    transporter: any;
+    transporter: nodemailer.Transporter;
     constructor() {
         this.transporter = nodemailer.createTransport(
             new smtpTransport({
@@ -30,8 +30,17 @@ class MailSender {
         this.transporter.use('compile', hbs(handlebarOptions))
     }
 
-    sendMail(mailOptions: any) {
-        this.transporter.sendMail(mailOptions, function(error: any, info: any){
+    sendMail(mailOptions: {
+        from: string;
+        to: string;
+        subject: string;
+        template: string;
+        context: {
+            name: string;
+            password: string;
+        }
+      }) {
+        this.transporter.sendMail(mailOptions, function(error: Error, info: {response: string}){
             if(error){
                 return console.log(error);
             }

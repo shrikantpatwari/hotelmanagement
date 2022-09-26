@@ -4,17 +4,17 @@ import { Room } from '@/models/Room.model'
 import ApiError from '@/utils/ApiError'
 import express from 'express'
 import httpStatus from 'http-status'
-import { authenticate } from 'passport'
+import passport, { authenticate } from 'passport'
 
 const router = express.Router()
 
-router.get('/', async (req, res, next) => {
+router.get('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   // logger.debug('%o', req.user)
   const room = await Room.find()
   res.json(room)
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
     logger.info(JSON.stringify(req.body))
     const room = new Room(req.body)
@@ -25,7 +25,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
     const room = await Room.findOne({ _id: req.params.id })
     if (!room) throw new ApiError(httpStatus.NOT_FOUND, 'room not found')
@@ -46,7 +46,7 @@ router.patch('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id',passport.authenticate('jwt', { session: false }),  async (req, res, next) => {
   try {
     const room = await Room.findOne({ _id: req.params.id })
     if (!room) throw new ApiError(httpStatus.NOT_FOUND, 'room not found')
@@ -90,7 +90,7 @@ router.get('/check-availability', async (req, res, next) => {
   })
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
     const room = await Room.findOne({ _id: req.params.id })
     if (!room) throw new ApiError(httpStatus.NOT_FOUND, 'room not found')

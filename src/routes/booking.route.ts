@@ -4,17 +4,17 @@ import { Booking } from '@/models/booking.model'
 import ApiError from '@/utils/ApiError'
 import express from 'express'
 import httpStatus from 'http-status'
-import { authenticate } from 'passport'
+import passport, { authenticate } from 'passport'
 
 const router = express.Router()
 
-router.get('/', async (req, res, next) => {
+router.get('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     // logger.debug('%o', req.user)
     const bookings = await Booking.find()
     res.json(bookings)
   })
 
-  router.get('/:id', async (req, res, next) => {
+  router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
       const booking = await Booking.findOne({ _id: req.params.id })
       if (!booking) throw new ApiError(httpStatus.NOT_FOUND, 'booking not found')
@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
     }
   })
 
-  router.post('/', async (req, res, next) => {
+  router.post('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
         console.log(req.body);
       const booking = new Booking(req.body)
@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
     }
   })
 
-  router.patch('/:id', async (req, res, next) => {
+  router.patch('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
       const booking = await Booking.findOne({ _id: req.params.id })
       if (!booking) throw new ApiError(httpStatus.NOT_FOUND, 'booking not found')
@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
     }
   })
 
-  router.delete('/:id', async (req, res, next) => {
+  router.delete('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
       const booking = await Booking.findOne({ _id: req.params.id })
       if (!booking) throw new ApiError(httpStatus.NOT_FOUND, 'booking not found')
