@@ -99,7 +99,7 @@ router.get('/my-bookings', passport.authenticate('jwt', {session: false}),async 
     });
 
     Promise.all(barr).then(() => {
-      res.send({success: 'ok', bookings: brData});
+      res.send({status: 'ok', bookings: brData});
     }).catch(e => {
       throw new Error("failed to fetch all bookins");
     })
