@@ -10,7 +10,7 @@ const router = express.Router()
 router.get('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     // logger.debug('%o', req.user)
     const user: any = req.user;
-    const bookings = await Booking.find({userId: user.id});
+    const bookings = await Booking.find({userId: '' + user._id});
     res.status(200).json({
       status: 'ok',
       data: bookings
@@ -20,7 +20,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
   router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
       const user: any = req.user;
-      const booking = await Booking.findOne({ _id: Types.ObjectId(req.params.id), userId: user.id })
+      const booking = await Booking.findOne({ _id: Types.ObjectId(req.params.id), userId: '' + user._id })
       if (!booking) throw new ApiError(httpStatus.NOT_FOUND, 'booking not found')
       res.status(200).json({
         status: 'ok',
@@ -47,11 +47,17 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
   router.patch('/:id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
       const user: any = req.user;
-      const booking = await Booking.findOne({ _id: Types.ObjectId(req.params.id), userId: user.id })
+      const booking = await Booking.findOne({ _id: Types.ObjectId(req.params.id), userId: '' + user._id })
+      
       if (!booking) throw new ApiError(httpStatus.NOT_FOUND, 'booking not found')
-      const { name, description, image } = req.body
-      await booking.save()
-      res.json(booking)
+      const { specialRequest } = req.body;
+      booking.specialRequest = specialRequest;
+      await booking.save();
+      res.status(200).json({
+        status: 'ok',
+        data: booking,
+        msg: 'Booking updated successfully'
+      });
     } catch (e) {
       next(e)
     }

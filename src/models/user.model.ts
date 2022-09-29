@@ -13,6 +13,7 @@ export interface IUser {
   birthday: Date
   gender: string
   address: string
+  avatar: string
   status: string
   hash_password: string
   salt: string
@@ -49,6 +50,10 @@ const schema = new Schema<IUserModel>(
       type: String,
       required: true,
       unique: true,
+    },
+    avatar: {
+      type: String,
+      required: false
     },
     phone: {
       type: String,
