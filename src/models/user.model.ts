@@ -26,10 +26,23 @@ export interface IUserToAuthJSON {
   email: string
 }
 
+export interface IUserJSON {
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  birthday: Date
+  gender: string
+  address: string
+  avatar: string
+  status: string
+}
+
 export default interface IUserModel extends Document, IUser {
   setPassword(password: string): void
   validPassword(password: string): boolean
   toAuthJSON(): IUserToAuthJSON
+  toUserJSON(): IUserJSON
   generateJWT(): string
   generateAccessJWT(): string
   name: string
@@ -119,6 +132,33 @@ schema.methods.generateJWT = function (): string {
       expiresIn: JWT_EXPIRE,
     },
   )
+}
+
+schema.methods.toUserJSON = function () {
+  const {
+    _id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    birthday,
+    gender,
+    address,
+    avatar,
+    status
+  } = this;
+  return {
+    id: _id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    birthday,
+    gender,
+    address,
+    avatar,
+    status
+  }
 }
 
 schema.methods.toAuthJSON = function () {

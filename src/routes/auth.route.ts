@@ -17,6 +17,7 @@ import { EMAIL_SERVICE_AUTH_USER } from '@/config/config'
 import { Booking } from '@/models/booking.model'
 import { User } from '@/models/user.model'
 import { Room } from '@/models/Room.model'
+import { Types } from 'mongoose'
 const router = express.Router()
 
 router.post('/login', async (req, res, next) => {
@@ -75,7 +76,10 @@ router.post('/register', async (req, res, next) => {
 })
 
 router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-  res.send(req.user)
+  const user: any = req.user;
+  const dbUser = await User.findOne({_id: Types.ObjectId(user._id)});
+  console.log(dbUser.toUserJSON());
+  res.json(dbUser.toUserJSON());
 })
 
 router.get('/my-bookings', passport.authenticate('jwt', {session: false}),async (req, res, next) => {
