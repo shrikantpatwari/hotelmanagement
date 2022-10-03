@@ -37,7 +37,10 @@ class MailSender {
         template: string;
         context: {
             name: string;
-            password: string;
+            email?: string;
+            password?: string;
+            token?:string;
+            host?: string;
         }
       }) {
         this.transporter.sendMail(mailOptions, function(error: Error, info: {response: string}){

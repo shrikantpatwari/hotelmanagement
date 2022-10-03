@@ -15,6 +15,7 @@ export interface IUser {
   address: string
   avatar: string
   status: string
+  token: string
   hash_password: string
   salt: string
 }
@@ -43,6 +44,7 @@ export default interface IUserModel extends Document, IUser {
   validPassword(password: string): boolean
   toAuthJSON(): IUserToAuthJSON
   toUserJSON(): IUserJSON
+  setResetToken(): string
   generateJWT(): string
   generateAccessJWT(): string
   name: string
@@ -88,6 +90,10 @@ const schema = new Schema<IUserModel>(
       type: String,
       required: false
     },
+    token: {
+      type: String,
+      private: true,
+    },
     hash_password: {
       type: String,
       private: true,
@@ -118,6 +124,11 @@ schema.methods.setPassword = function (password: string) {
 schema.methods.validPassword = function (password: string): boolean {
   const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex')
   return this.hash_password === hash
+}
+
+schema.methods.setResetToken = function (): string {
+  this.token = crypto.randomBytes(8).toString('hex');
+  return this.token;
 }
 
 schema.methods.generateJWT = function (): string {
