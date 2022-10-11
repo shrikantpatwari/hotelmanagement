@@ -83,6 +83,7 @@ router.get('/forgot-password',async (req, res, next) => {
       const hostName = req.headers.origin
       if (user) {
         const token = user.setResetToken();
+        await user.save();
         MailService.sendMail({
           from: EMAIL_SERVICE_AUTH_USER, // sender address
           to: user.email, // list of receivers
@@ -142,7 +143,7 @@ router.post('/reset-password', passport.authenticate('jwt', { session: false }),
     if (!user || !dbUser.validPassword(currentPassword))
       throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid email or password')
     dbUser.setPassword(newPassword);
-    await dbUser.save();
+    await dbUser.save();  
     res.send({status: 'ok', msg: 'Password changed successfully'});
   } catch (e) {
     next(e)
